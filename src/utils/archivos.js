@@ -10,21 +10,13 @@ function leerArchivoComoString(ruta){
     }
 }
 
-/*
-https://nodejs.org/api/fs.html#fs_file_system_flags 
-
-'w': Open file for writing. The file is created (if it does not exist) or truncated (if it exists).
-
-'wx': Like 'w' but fails if the path exists.
-*/
-
 function escribirTextoEnArchivo(ruta, texto, crearSiNoExiste){
-    try{
-        fs.writeFileSync(ruta, texto, {flag : crearSiNoExiste ? 'w' : 'wx'});
-    }
-    catch(err){
-        throw new Error(err);
-    }
+    let archivoExiste = fs.existsSync(ruta);
+
+    if(!archivoExiste && !crearSiNoExiste)
+        throw new Error("el archivo no existe");
+
+    fs.writeFileSync(ruta, texto);
 }
 
 export {
